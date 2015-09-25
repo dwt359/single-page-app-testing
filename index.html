@@ -25,6 +25,7 @@
         </style>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/history.js/1.8/native.history.min.js"></script>
         <script>
             function stageContent(content) {
                 $("#stage").html(content);
@@ -75,7 +76,7 @@
                     var request = $(this).attr("href");
                     
                     // And add it to the browser's history
-                    history.pushState(null, null, request);
+                    History.pushState(null, null, request);
                     
                     // Then evaluate it
                     evaluatePath(request);
@@ -84,7 +85,7 @@
                 
                 
                 // If the back button is pressed...
-                $(window).on("popstate", function() {
+                History.Adapter.bind(window,'statechange',function(){
                     evaluatePath(location.pathname);
                 });
                 
