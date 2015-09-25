@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>AJAX-Based Navigation</title>
+        <title>AJAX Nav</title>
         <meta charset="utf-8">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
@@ -38,16 +38,22 @@
                 // Request the content
                 if (request == "about") {
                     $.get("about.html", stageContent);
+                    updateTitle("About");
                 }
                 else if (request == "contact") {
                     $.get("contact.html", stageContent);
+                    updateTitle("Contact");
                 }
                 else {
                     $.get("home.html", stageContent);
+                    updateTitle("Home");
                 }
             }
-            
-            
+
+            function updateTitle(value){
+                document.title = "AJAX Nav: "+value;
+            }
+
             $(function(){
                 // Evaluate path to start
                 evaluatePath(location.pathname);
