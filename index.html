@@ -39,19 +39,27 @@
                 if (request == "about") {
                     $.get("about.html", stageContent);
                     updateTitle("About");
+                    activateTab('#li-about');
                 }
                 else if (request == "contact") {
                     $.get("contact.html", stageContent);
                     updateTitle("Contact");
+                    activateTab('#li-contact');
                 }
                 else {
                     $.get("home.html", stageContent);
                     updateTitle("Home");
+                    activateTab('#li-home');
                 }
             }
 
             function updateTitle(value){
                 document.title = "AJAX Nav: "+value;
+            }
+
+            function activateTab(id){
+                $('li').removeClass('active');
+                $(id).addClass('active');
             }
 
             $(function(){
@@ -91,9 +99,9 @@
             <div class="header clearfix">
                 <nav role="navigation">
                     <ul class="nav nav-pills pull-right">
-                        <li><a href="./">Home</a></li>
-                        <li><a href="./about">About</a></li>
-                        <li><a href="./contact">Contact</a></li>
+                        <li id="li-home"><a href="./">Home</a></li>
+                        <li id="li-about"><a href="./about">About</a></li>
+                        <li id="li-contact"><a href="./contact">Contact</a></li>
                     </ul>
                 </nav>
                 <h2 class="text-muted">AJAX Navigation</h2>
