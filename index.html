@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>AJAX-Nav</title>
+        <title>AJAX-Based Navigation</title>
         <meta charset="utf-8">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
@@ -31,54 +31,71 @@
             }
             
             
-            function evaluateHash() {
-
-                if (location.hash == "#about") {
+            function evaluatePath(path) {
+                // Clean up the endpoint
+                var request = path.split("/").pop();
+                
+                // Request the content
+                if (request == "about") {
                     $.get("about.html", stageContent);
-                    updateTitle("About");
-                    activateTab('#li-about');
                 }
-                else if (location.hash == "#contact") {
+                else if (request == "contact") {
                     $.get("contact.html", stageContent);
-                    updateTitle("Contact");
-                    activateTab('#li-contact');
                 }
                 else {
                     $.get("home.html", stageContent);
-                    updateTitle("Home");
-                    activateTab('#li-home');
                 }
             }
-
-            function updateTitle(value){
-                document.title = "AJAX Nav: "+value;
-            }
-
-            function activateTab(id){
-                $('li').removeClass('active');
-                $(id).addClass('active');
-            }
+            
             
             $(function(){
-                evaluateHash();
-                window.onhashchange = evaluateHash;
+                // Evaluate path to start
+                evaluatePath(location.pathname);
+                
+                // When a link is clicked...
+                $("nav[role=navigation] a").click(function(e) {
+                    // Don't follow its href
+                    e.preventDefault();
+                    
+                    // Instead remember its href
+                    var request = $(this).attr("href");
+                    
+                    // And add it to the browser's history
+                    history.pushState(null, null, request);
+                    
+                    // Then evaluate it
+                    evaluatePath(request);
+                    
+                });
+                
+                
+                // If the back button is pressed...
+                $(window).on("popstate", function() {
+                    evaluatePath(location.pathname);
+                });
+                
+                
             });
-            
         </script>
     </head>
     <body>
         <div class="container">
+            
+            <!-- HEADER -->
             <div class="header clearfix">
                 <nav role="navigation">
                     <ul class="nav nav-pills pull-right">
-                        <li id="li-home"><a href="#">Home</a></li>
-                        <li id="li-about"><a href="#about">About</a></li>
-                        <li id="li-contact"><a href="#contact">Contact</a></li>
+                        <li><a href="./">Home</a></li>
+                        <li><a href="./about">About</a></li>
+                        <li><a href="./contact">Contact</a></li>
                     </ul>
                 </nav>
                 <h2 class="text-muted">AJAX Navigation</h2>
             </div>
+            
+            <!-- STAGE -->
             <div id="stage"></div>
+            
         </div>
     </body>
 </html>
